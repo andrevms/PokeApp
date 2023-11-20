@@ -126,30 +126,37 @@ class PokemonDetalhesPage extends StatelessWidget {
           ),
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          mainAxisAlignment: MainAxisAlignment.center,          
+          children: [            
             Container(
               padding: EdgeInsets.fromLTRB(10, 5, 5, 10),
-              child: Column(children: [
-                Row(
+              child: Column(                
+                children: [
+                Row(                  
                   children: [
-                    Text("imagem"),
-                    Text('${model.peso.toString()} kg'),
+                    const Icon(Icons.fitness_center_sharp, size: 15.0,),
+                    const Text("    ")
+                    ,
+                    Text('${model.peso.toString()} kg', style: const TextStyle(fontSize: 14),),
                   ],
                 ),
-                const Text("Weight")
+                const Text("Weight", style: TextStyle(fontSize: 12))
               ]),
             ),
+            const Text("|",style: TextStyle(fontSize: 45, fontWeight: FontWeight.w100,color: Colors.grey),)
+            ,
             Container(
-              padding: EdgeInsets.fromLTRB(10, 5, 5, 10),
+              padding: const EdgeInsets.fromLTRB(10, 5, 5, 10),
               child: Column(children: [
                 Row(
                   children: [
-                    Text("imagem"),
-                    Text('${model.altura.toString()} m'),
+                    const Icon(Icons.height, size: 15.0),
+                    const Text(" ")
+                    ,
+                    Text('${model.altura.toString()} m', style: const TextStyle(fontSize: 14)),
                   ],
                 ),
-                const Text("Height")
+                const Text("Height",style: TextStyle(fontSize: 12))
               ]),
             ),
           ],
