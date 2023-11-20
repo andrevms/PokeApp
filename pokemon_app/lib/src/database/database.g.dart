@@ -85,7 +85,7 @@ class _$PokemonDatabase extends PokemonDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `pokemon_catch` (`pokedexNumber` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nome` TEXT NOT NULL, `tipo` TEXT NOT NULL, `image` TEXT)');
+            'CREATE TABLE IF NOT EXISTS `pokemon_catch` (`pokedexNumber` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nome` TEXT NOT NULL, `tipo` TEXT NOT NULL, `image` TEXT NOT NULL)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -157,7 +157,7 @@ class _$PokemonCatchDao extends PokemonCatchDao {
             row['pokedexNumber'] as int,
             row['nome'] as String,
             row['tipo'] as String,
-            row['image'] as String?));
+            row['image'] as String));
   }
 
   @override
@@ -168,8 +168,20 @@ class _$PokemonCatchDao extends PokemonCatchDao {
             row['pokedexNumber'] as int,
             row['nome'] as String,
             row['tipo'] as String,
-            row['image'] as String?),
+            row['image'] as String),
         arguments: [pokedexNumber],
+        queryableName: 'pokemon_catch',
+        isView: false);
+  }
+
+  @override
+  Stream<PokemonCatch?> deleteAll() {
+    return _queryAdapter.queryStream('DELETE FROM pokemon_catch',
+        mapper: (Map<String, Object?> row) => PokemonCatch(
+            row['pokedexNumber'] as int,
+            row['nome'] as String,
+            row['tipo'] as String,
+            row['image'] as String),
         queryableName: 'pokemon_catch',
         isView: false);
   }

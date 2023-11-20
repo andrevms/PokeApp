@@ -7,7 +7,7 @@ class PokemonCatch {
 
   String nome = '';
   String tipo = '';
-  String? image = '';
+  String image = '';
 
   PokemonCatch(this.pokedexNumber, this.nome, this.tipo, this.image);
 

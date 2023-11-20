@@ -10,6 +10,9 @@ abstract class PokemonCatchDao {
   @Query('SELECT * FROM pokemon_catch WHERE pokedexNumber = :pokedexNumber')
   Stream<PokemonCatch?> findPokemonCatchById(int pokedexNumber);
 
+  @Query('DELETE FROM pokemon_catch')
+  Stream<PokemonCatch?> deleteAll();
+
   @insert
   Future<void> insertPokemonCatch(PokemonCatch pokemonCatch);
 

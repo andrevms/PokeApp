@@ -41,7 +41,7 @@ class _ListBodyState extends State<ListBody> {
   }
 
   Future<PokemonDatabase> initializaDatabase() async {
-    return $FloorPokemonDatabase.databaseBuilder('pokemon_database.db').build();
+    return $FloorPokemonDatabase.databaseBuilder('pokemons_database.db').build();
   }
 
   @override
@@ -107,7 +107,7 @@ class _ListBodyState extends State<ListBody> {
                 height: 100, // Ajuste conforme necessário
                 width: 100, // Ajuste conforme necessário
                 child: Image.network(
-                  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/3.png",
+                  pokemon.image,
                   fit: BoxFit.cover,
                 ),
               ),
