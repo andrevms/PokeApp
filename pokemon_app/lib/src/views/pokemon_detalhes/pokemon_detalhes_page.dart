@@ -1,6 +1,7 @@
 // tem as informações do model
 
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 import 'package:pokemon_app/src/models/pokemon_model.dart';
 
 class PokemonDetalhesPage extends StatelessWidget {
@@ -9,25 +10,56 @@ class PokemonDetalhesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  List<String> listTipo = model.tipo!.replaceAll('[', '').replaceAll(']', '').split(', ');
+    List<String> listTipo =
+        model.tipo!.replaceAll('[', '').replaceAll(']', '').split(', ');
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: pokemonDetailAppBar(),
         backgroundColor: corByTipoPokemon(listTipo[0]),
         body: bodyApp(MediaQuery.of(context).size.width,
-            MediaQuery.of(context).size.height, model,listTipo));
+            MediaQuery.of(context).size.height, model, listTipo));
   }
 
   Color corByTipoPokemon(var tipo) {
     switch (tipo) {
-      case "Grass":
-        return Color(0xFF74CB48);
-      case "Poison":
-        return Color(0xFFA43E9E);
-      case "Ice":
-        return Color(0xFF9AD6DF);
+      case "normal":
+        return const Color(0xFFAAA67F);
+      case "fighting":
+        return const Color(0xFFC12239);
+      case "flying":
+        return const Color(0xFFA891EC);
+      case "ground":
+        return const Color(0xFFDEC16B);
+      case "poison":
+        return const Color(0xFFA43E9E);
+      case "rock":
+        return const Color(0xFFB69E31);
+      case "bug":
+        return const Color(0xFFA7B723);
+      case "ghost":
+        return const Color(0xFF70559B);
+      case "steel":
+        return const Color(0xFFB7B9D0);
+      case "fire":
+        return const Color(0xFFF57D31);
+      case "water":
+        return const Color(0xFF6493EB);
+      case "grass":
+        return const Color(0xFF74CB48);
+      case "eletric":
+        return const Color(0xFFF9CF30);
+      case "psychic":
+        return const Color(0xFFFB5584);
+      case "ice":
+        return const Color(0xFF9AD6DF);
+      case "dragon":
+        return const Color(0xFF7037FF);
+      case "dark":
+        return const Color(0xFF75574C);
+      case "fairy":
+        return const Color(0xFFE69EAC);
       default:
-        return Colors.grey;
+        return const Color(0xFF666666);
     }
   }
 
@@ -54,7 +86,8 @@ class PokemonDetalhesPage extends StatelessWidget {
     );
   }
 
-  Widget bodyApp(var mediaWidth, var mediaHeight, PokemonModel model, List<String> listTipo) {
+  Widget bodyApp(var mediaWidth, var mediaHeight, PokemonModel model,
+      List<String> listTipo) {
     return Stack(
       alignment: Alignment.topCenter,
       children: [
@@ -73,8 +106,8 @@ class PokemonDetalhesPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 20),
-                  Expanded(
+                  SizedBox(
+                    height: 60,
                     child: Wrap(
                       direction: Axis.vertical,
                       children: listTipo.map(
@@ -99,11 +132,33 @@ class PokemonDetalhesPage extends StatelessWidget {
                       ).toList(),
                     ),
                   ),
-                  Expanded(
-                    child: pokemonAbout(model,listTipo),
+                  SizedBox(
+                    child: pokemonAbout(model, listTipo),
                   ),
-                  Expanded(child: Text('teste')),
-                  Expanded(child: Text('teste')),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    child: Text(
+                      'Base Stats',
+                      style: TextStyle(
+                        color: corByTipoPokemon(listTipo[0]),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        pokemonBaseStats("HP", model.vida!, model, listTipo),
+                        pokemonBaseStats("ATK", model.atk!, model, listTipo),
+                        pokemonBaseStats("DEF", model.def!, model, listTipo),
+                        pokemonBaseStats(
+                            "SATK", model.velAtk!, model, listTipo),
+                        pokemonBaseStats(
+                            "SDEF", model.velDef!, model, listTipo),
+                        pokemonBaseStats("SPD", model.vel!, model, listTipo),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -114,9 +169,52 @@ class PokemonDetalhesPage extends StatelessWidget {
     );
   }
 
-  Widget pokemonAbout(PokemonModel model,List<String> listTipo) {
-    return Container(
-      child: Column(children: [
+  Widget pokemonBaseStats(
+      String atributo, int val, PokemonModel model, List<String> listTipo) {
+    return SizedBox(
+      height: 30,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Text(
+            atributo,
+            textAlign: TextAlign.right,
+          ),
+          const Text(
+            "|",
+            style: TextStyle(
+                fontSize: 45, fontWeight: FontWeight.w100, color: Colors.grey),
+          ),
+          Text(
+            val.toString(),
+            textAlign: TextAlign.right,
+          ),
+          pokemonStatwidget(val, listTipo),
+        ],
+      ),
+    );
+  }
+
+  Widget pokemonStatwidget(int val, List<String> listTipo) {
+    double valEmDouble = val / 100.0;
+    if (valEmDouble > 1) {
+      valEmDouble = 1;
+    }
+    Color cor = corByTipoPokemon(listTipo[0]);
+    return LinearPercentIndicator(
+      barRadius: const Radius.circular(18.0),
+      width: 200.0,
+      lineHeight: 14.0,
+      percent: valEmDouble,
+      backgroundColor: Colors.grey,
+      progressColor: cor,
+    );
+  }
+
+  Widget pokemonAbout(PokemonModel model, List<String> listTipo) {
+    return Column(
+      children: [
         Text(
           'About',
           style: TextStyle(
@@ -126,42 +224,53 @@ class PokemonDetalhesPage extends StatelessWidget {
           ),
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,          
-          children: [            
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
             Container(
-              padding: EdgeInsets.fromLTRB(10, 5, 5, 10),
-              child: Column(                
+              padding: const EdgeInsets.fromLTRB(10, 5, 5, 10),
+              child: Column(
                 children: [
-                Row(                  
-                  children: [
-                    const Icon(Icons.fitness_center_sharp, size: 15.0,),
-                    const Text("    ")
-                    ,
-                    Text('${model.peso.toString()} kg', style: const TextStyle(fontSize: 14),),
-                  ],
-                ),
-                const Text("Weight", style: TextStyle(fontSize: 12))
-              ]),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.fitness_center_sharp,
+                        size: 15.0,
+                      ),
+                      const Text("    "),
+                      Text(
+                        '${model.peso.toString()} kg',
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    ],
+                  ),
+                  const Text("Weight", style: TextStyle(fontSize: 12))
+                ],
+              ),
             ),
-            const Text("|",style: TextStyle(fontSize: 45, fontWeight: FontWeight.w100,color: Colors.grey),)
-            ,
+            const Text(
+              "|",
+              style: TextStyle(
+                  fontSize: 45,
+                  fontWeight: FontWeight.w100,
+                  color: Colors.grey),
+            ),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 5, 5, 10),
               child: Column(children: [
                 Row(
                   children: [
                     const Icon(Icons.height, size: 15.0),
-                    const Text(" ")
-                    ,
-                    Text('${model.altura.toString()} m', style: const TextStyle(fontSize: 14)),
+                    const Text(" "),
+                    Text('${model.altura.toString()} m',
+                        style: const TextStyle(fontSize: 14)),
                   ],
                 ),
-                const Text("Height",style: TextStyle(fontSize: 12))
+                const Text("Height", style: TextStyle(fontSize: 12))
               ]),
             ),
           ],
         )
-      ]),
+      ],
     );
   }
 
@@ -182,29 +291,3 @@ class PokemonDetalhesPage extends StatelessWidget {
     );
   }
 }
-
-/*Expanded(
-                      flex: 1,
-                      child: ListView.builder(
-                          padding: const EdgeInsets.fromLTRB(5, 15, 5, 5),
-                          scrollDirection: Axis.horizontal,
-                          itemCount: model.tipo.length,
-                          itemBuilder: (context, index) {
-                            return Center(
-                              child: Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 5.0),
-                                  padding:
-                                      const EdgeInsets.fromLTRB(8, 5, 8, 5),
-                                  decoration: BoxDecoration(
-                                    color: corByTipoPokemon(
-                                        model.tipo[index]), // Cor de fundo
-                                    borderRadius: BorderRadius.circular(
-                                        10.0), // Borda arredondada
-                                  ),
-                                  child: Text(
-                                    model.tipo[index],
-                                    style: const TextStyle(color: Colors.white),
-                                  )),
-                            );
-                          })),*/
