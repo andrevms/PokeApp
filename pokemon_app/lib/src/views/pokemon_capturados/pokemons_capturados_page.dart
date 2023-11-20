@@ -63,10 +63,10 @@ class _ListBodyState extends State<ListBody> {
                   borderRadius: BorderRadius.circular(40.0),
                  // backgroundColor: Colors.red,//Theme.of(context).colorScheme.primary,
                   child: Container(
-                    color:  Color.fromARGB(255, 250, 247, 247),
+                    color:  const Color.fromARGB(255, 250, 247, 247),
                     margin: const EdgeInsets.all(8.0),
                     child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3, // 3 cards em cada linha
                         crossAxisSpacing: 8.0,
                         mainAxisSpacing: 8.0,
@@ -97,7 +97,7 @@ class _ListBodyState extends State<ListBody> {
       child: SingleChildScrollView(
         //padding: const EdgeInsets.all(10),
         child: Card(
-          color: Color.fromARGB(255, 228, 223, 223),
+          color: const Color.fromARGB(255, 228, 223, 223),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
           child: Column(
