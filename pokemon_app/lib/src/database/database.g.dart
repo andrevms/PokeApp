@@ -175,18 +175,6 @@ class _$PokemonCatchDao extends PokemonCatchDao {
   }
 
   @override
-  Stream<PokemonCatch?> deleteAll() {
-    return _queryAdapter.queryStream('DELETE FROM pokemon_catch',
-        mapper: (Map<String, Object?> row) => PokemonCatch(
-            row['pokedexNumber'] as int,
-            row['nome'] as String,
-            row['tipo'] as String,
-            row['image'] as String),
-        queryableName: 'pokemon_catch',
-        isView: false);
-  }
-
-  @override
   Future<void> insertPokemonCatch(PokemonCatch pokemonCatch) async {
     await _pokemonCatchInsertionAdapter.insert(
         pokemonCatch, OnConflictStrategy.abort);
