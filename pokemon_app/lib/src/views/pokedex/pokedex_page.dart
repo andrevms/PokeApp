@@ -9,6 +9,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pokemon_app/src/models/pokemon_model.dart';
+import 'package:pokemon_app/src/views/pokemon_detalhes/pokemon_detalhes_page.dart';
 
 class PokedexListPage extends StatelessWidget {
   const PokedexListPage({super.key});
@@ -19,13 +20,13 @@ class PokedexListPage extends StatelessWidget {
       child: Scaffold(
           appBar: AppBar(
             backgroundColor: Theme.of(context).colorScheme.primary,
-            title:const Text(
-              "Pokedex App",                                        
+            title: const Text(
+              "Pokedex App",
             ),
             centerTitle: true,
             titleTextStyle: Theme.of(context).textTheme.labelLarge,
           ),
-          body:const ListPage()),
+          body: const ListPage()),
     );
   }
 }
@@ -46,7 +47,7 @@ class _ListPageState extends State<ListPage> {
 
     var pokemonModel = PokemonModel();
     List<PokemonModel> listaPokemons = await pokemonModel.toList(pokemonApi);
-    
+    print(listaPokemons[0].tipo);
     return listaPokemons;
   }
 
@@ -62,55 +63,66 @@ class _ListPageState extends State<ListPage> {
           int numRows = (pokemons.length / 3).ceil();
 
           return Container(
-            color:  Theme.of(context).colorScheme.primary,             
-            child: Container(
-              color: Colors.white,
-              margin: const EdgeInsets.all(8.0),
-              child: ListView.builder(                                          
-                itemCount: numRows,
-                itemBuilder: (BuildContext context, int rowIndex) {
-                  int startIndex = rowIndex * 3;
-                  int endIndex = (rowIndex + 1) * 3;
-                      
-                  // Garante que endIndex não ultrapasse o comprimento da lista
-                  endIndex =
-                      endIndex > pokemons.length ? pokemons.length : endIndex;
-                      
-                  // Cria uma lista de pokémons para a linha atual
-                  List<PokemonModel> pokemonRow =
-                      pokemons.sublist(startIndex, endIndex);
-                  return Row(                                    
-                    children: pokemonRow.map((pokemon) {
-                      return Expanded(                                            
-                        child: Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                print("foi clicado no pokemon: ${pokemon.nome}");
-                              },
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0)),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Column(
-                                    children: [
-                                      Image.network(
-                                        pokemon.urlImagem ?? "https://i.pinimg.com/474x/e5/5e/b0/e55eb016d5271531276b6fccdf5389ce.jpg",
-                                        scale: 5,
-                                      ),
-                                      Text(pokemon.nome!),
-                                    ],
+            color: Theme.of(context).colorScheme.primary,
+            padding: const EdgeInsets.all(8.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: ListView.builder(
+                  itemCount: numRows,
+                  itemBuilder: (BuildContext context, int rowIndex) {
+                    int startIndex = rowIndex * 3;
+                    int endIndex = (rowIndex + 1) * 3;
+
+                    // Garante que endIndex não ultrapasse o comprimento da lista
+                    endIndex =
+                        endIndex > pokemons.length ? pokemons.length : endIndex;
+
+                    // Cria uma lista de pokémons para a linha atual
+                    List<PokemonModel> pokemonRow =
+                        pokemons.sublist(startIndex, endIndex);
+                    return Row(
+                      children: pokemonRow.map((pokemon) {
+                        return Expanded(
+                          child: Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              PokemonDetalhesPage(
+                                                  model: pokemon)));
+                                },
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(18.0)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Column(
+                                      children: [
+                                        Image.network(
+                                          pokemon.urlImagem!,
+                                          scale: 5,
+                                        ),
+                                        Text(pokemon.nome!),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  );
-                },
+                              )
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    );
+                  },
+                ),
               ),
             ),
           );

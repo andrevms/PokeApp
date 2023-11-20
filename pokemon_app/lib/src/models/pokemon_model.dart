@@ -66,7 +66,7 @@ class PokemonModel {
         vel: json['stats'][5]['base_stat'],
         total: valorTotal,
         urlImagem: json['sprites']['other']['official-artwork']
-            ['front_default']);
+            ['front_default']?? "https://i.pinimg.com/474x/e5/5e/b0/e55eb016d5271531276b6fccdf5389ce.jpg");
   }
 
   Future<List<PokemonModel>> toList(json) async {

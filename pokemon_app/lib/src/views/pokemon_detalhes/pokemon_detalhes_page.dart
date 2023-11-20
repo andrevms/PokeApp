@@ -5,16 +5,17 @@ import 'package:pokemon_app/src/models/pokemon_model.dart';
 
 class PokemonDetalhesPage extends StatelessWidget {
   final PokemonModel model;
-  const PokemonDetalhesPage({super.key, required this.model});
+  PokemonDetalhesPage({super.key, required this.model});
 
   @override
   Widget build(BuildContext context) {
+  List<String> listTipo = model.tipo!.replaceAll('[', '').replaceAll(']', '').split(', ');
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: pokemonDetailAppBar(),
-        backgroundColor: corByTipoPokemon(model.tipo.first),
+        backgroundColor: corByTipoPokemon(listTipo[0]),
         body: bodyApp(MediaQuery.of(context).size.width,
-            MediaQuery.of(context).size.height, model));
+            MediaQuery.of(context).size.height, model,listTipo));
   }
 
   Color corByTipoPokemon(var tipo) {
@@ -53,7 +54,7 @@ class PokemonDetalhesPage extends StatelessWidget {
     );
   }
 
-  Widget bodyApp(var mediaWidth, var mediaHeight, PokemonModel model) {
+  Widget bodyApp(var mediaWidth, var mediaHeight, PokemonModel model, List<String> listTipo) {
     return Stack(
       alignment: Alignment.topCenter,
       children: [
@@ -76,7 +77,7 @@ class PokemonDetalhesPage extends StatelessWidget {
                   Expanded(
                     child: Wrap(
                       direction: Axis.vertical,
-                      children: model.tipo.map(
+                      children: listTipo.map(
                         (tipo) {
                           return Center(
                             child: Container(
@@ -99,7 +100,7 @@ class PokemonDetalhesPage extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    child: pokemonAbout(model),
+                    child: pokemonAbout(model,listTipo),
                   ),
                   Expanded(child: Text('teste')),
                   Expanded(child: Text('teste')),
@@ -113,7 +114,7 @@ class PokemonDetalhesPage extends StatelessWidget {
     );
   }
 
-  Widget pokemonAbout(PokemonModel model) {
+  Widget pokemonAbout(PokemonModel model,List<String> listTipo) {
     return Container(
       child: Column(children: [
         Text(
@@ -121,7 +122,7 @@ class PokemonDetalhesPage extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18.0,
-            color: corByTipoPokemon(model.tipo.first),
+            color: corByTipoPokemon(listTipo[0]),
           ),
         ),
         Row(
@@ -166,7 +167,7 @@ class PokemonDetalhesPage extends StatelessWidget {
         foregroundDecoration: BoxDecoration(
           image: DecorationImage(
               image: NetworkImage(
-                model.urlImagem,
+                model.urlImagem!,
               ),
               fit: BoxFit.fill),
         ),
