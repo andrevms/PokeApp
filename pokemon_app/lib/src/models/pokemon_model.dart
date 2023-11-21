@@ -70,11 +70,14 @@ class PokemonModel {
   }
 
   Future<List<PokemonModel>> toList(json) async {
+    //lita de Futures
     List<Future> apiListaPokemons = [];
+    //lista de pokemons
     List<PokemonModel> listaPokemons = [];
+    //gerar número aleatório até 1150
     int valor = Random().nextInt(1150);
 
-    for (var x = valor; x < valor+50; x++) {
+    for (var x = valor; x < valor+20; x++) {
       apiListaPokemons.add(Dio().get(json[x]["url"]).then((value) {
         listaPokemons.add(toModel(value));
       }));

@@ -40,6 +40,7 @@ class ListPage extends StatefulWidget {
 
 class _ListPageState extends State<ListPage> {
   Future<List<PokemonModel>> pegarPokemons() async {
+   
     //Retorna lista de pokemons
     var pokemonApi = (await Dio()
             .get('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0'))
@@ -48,7 +49,14 @@ class _ListPageState extends State<ListPage> {
     var pokemonModel = PokemonModel();
     List<PokemonModel> listaPokemons = await pokemonModel.toList(pokemonApi);
     print(listaPokemons[0].tipo);
+    
     return listaPokemons;
+  }
+  atualizar()async{
+    setState(() {
+      
+    });
+    return true;
   }
 
   @override
@@ -62,66 +70,69 @@ class _ListPageState extends State<ListPage> {
           // Calcula o número de linhas necessárias
           int numRows = (pokemons.length / 3).ceil();
 
-          return Container(
-            color: Theme.of(context).colorScheme.primary,
-            padding: const EdgeInsets.all(8.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(30),
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                ),
-                child: ListView.builder(
-                  itemCount: numRows,
-                  itemBuilder: (BuildContext context, int rowIndex) {
-                    int startIndex = rowIndex * 3;
-                    int endIndex = (rowIndex + 1) * 3;
-
-                    // Garante que endIndex não ultrapasse o comprimento da lista
-                    endIndex =
-                        endIndex > pokemons.length ? pokemons.length : endIndex;
-
-                    // Cria uma lista de pokémons para a linha atual
-                    List<PokemonModel> pokemonRow =
-                        pokemons.sublist(startIndex, endIndex);
-                    return Row(
-                      children: pokemonRow.map((pokemon) {
-                        return Expanded(
-                          child: Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              PokemonDetalhesPage(
-                                                  model: pokemon)));
-                                },
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(18.0)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Column(
-                                      children: [
-                                        Image.network(
-                                          pokemon.urlImagem!,
-                                          scale: 5,
-                                        ),
-                                        Text(pokemon.nome!),
-                                      ],
+          return RefreshIndicator(
+            onRefresh: () => atualizar(),
+            child: Container(
+              color: Theme.of(context).colorScheme.primary,
+              padding: const EdgeInsets.all(8.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(30),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                  ),
+                  child: ListView.builder(
+                    itemCount: numRows,
+                    itemBuilder: (BuildContext context, int rowIndex) {
+                      int startIndex = rowIndex * 3;
+                      int endIndex = (rowIndex + 1) * 3;
+          
+                      // Garante que endIndex não ultrapasse o comprimento da lista
+                      endIndex =
+                          endIndex > pokemons.length ? pokemons.length : endIndex;
+          
+                      // Cria uma lista de pokémons para a linha atual
+                      List<PokemonModel> pokemonRow =
+                          pokemons.sublist(startIndex, endIndex);
+                      return Row(
+                        children: pokemonRow.map((pokemon) {
+                          return Expanded(
+                            child: Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                PokemonDetalhesPage(
+                                                    model: pokemon)));
+                                  },
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(18.0)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: Column(
+                                        children: [
+                                          Image.network(
+                                            pokemon.urlImagem!,
+                                            scale: 5,
+                                          ),
+                                          Text(pokemon.nome!),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              )
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                    );
-                  },
+                                )
+                              ],
+                            ),
+                          );
+                        }).toList(),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
