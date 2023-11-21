@@ -1,7 +1,10 @@
 // tem as informações do model
 
 import 'package:flutter/material.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:pokemon_app/src/database/database.dart';
+import 'package:pokemon_app/src/models/pokemon_catch.dart';
 import 'package:pokemon_app/src/models/pokemon_model.dart';
 
 class PokemonDetalhesPage extends StatelessWidget {
@@ -46,7 +49,7 @@ class PokemonDetalhesPage extends StatelessWidget {
         return const Color(0xFF6493EB);
       case "grass":
         return const Color(0xFF74CB48);
-      case "eletric":
+      case "electric":
         return const Color(0xFFF9CF30);
       case "psychic":
         return const Color(0xFFFB5584);
@@ -164,8 +167,58 @@ class PokemonDetalhesPage extends StatelessWidget {
             ),
           )
         ]),
-        pokemonImage(mediaWidth, mediaHeight)
+        pokemonImage(mediaWidth, mediaHeight),
+        capturePokemon(model, listTipo),
       ],
+    );
+  }
+
+  Widget capturePokemon(PokemonModel model, List<String> listTipo) {
+    return Positioned(
+      bottom: 20,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            backgroundColor: corByTipoPokemon(listTipo[0])),
+        onPressed: () async {
+          var data = await $FloorPokemonDatabase
+              .databaseBuilder('pokemons_database.db')
+              .build();
+
+          PokemonCatch? dataPokemon = await data.pokemonCatchDao
+              .findPokemonCatchById(model.pokedexNumber!);
+
+          if (dataPokemon == null) {
+            PokemonCatch pokemon = PokemonCatch(model.pokedexNumber!,
+                model.nome!, model.tipo!, model.urlImagem!);
+
+            data.pokemonCatchDao.insertPokemonCatch(pokemon);
+            showToast(
+              "Parabéns !!! Você Capturou Esse pokemon!",
+              duration: Duration(seconds: 2),
+              position: ToastPosition.bottom,
+              backgroundColor: corByTipoPokemon(listTipo[0]).withOpacity(0.8),
+              radius: 13.0,
+              textStyle: TextStyle(fontSize: 18.0, color: Colors.white),
+            );
+          } else {
+            showToast(
+              "Você já possui esse pokemon",
+              duration: Duration(seconds: 2),
+              position: ToastPosition.bottom,
+              backgroundColor: corByTipoPokemon(listTipo[0]).withOpacity(0.8),
+              radius: 13.0,
+              textStyle: TextStyle(fontSize: 18.0, color: Colors.white),
+            );
+          }
+        },
+        child: Container(
+          width: 30,
+          height: 30,
+          child: Image(
+            image: AssetImage("assets/pokebola.png"),
+          ),
+        ),
+      ),
     );
   }
 

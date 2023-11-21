@@ -85,7 +85,7 @@ class _$PokemonDatabase extends PokemonDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `pokemon_catch` (`pokedexNumber` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nome` TEXT NOT NULL, `tipo` TEXT NOT NULL, `image` TEXT NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `pokemon_catch` (`pokedexNumber` INTEGER NOT NULL, `nome` TEXT NOT NULL, `tipo` TEXT NOT NULL, `image` TEXT NOT NULL, PRIMARY KEY (`pokedexNumber`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -104,7 +104,7 @@ class _$PokemonCatchDao extends PokemonCatchDao {
   _$PokemonCatchDao(
     this.database,
     this.changeListener,
-  )   : _queryAdapter = QueryAdapter(database, changeListener),
+  )   : _queryAdapter = QueryAdapter(database),
         _pokemonCatchInsertionAdapter = InsertionAdapter(
             database,
             'pokemon_catch',
@@ -113,8 +113,7 @@ class _$PokemonCatchDao extends PokemonCatchDao {
                   'nome': item.nome,
                   'tipo': item.tipo,
                   'image': item.image
-                },
-            changeListener),
+                }),
         _pokemonCatchUpdateAdapter = UpdateAdapter(
             database,
             'pokemon_catch',
@@ -124,8 +123,7 @@ class _$PokemonCatchDao extends PokemonCatchDao {
                   'nome': item.nome,
                   'tipo': item.tipo,
                   'image': item.image
-                },
-            changeListener),
+                }),
         _pokemonCatchDeletionAdapter = DeletionAdapter(
             database,
             'pokemon_catch',
@@ -135,8 +133,7 @@ class _$PokemonCatchDao extends PokemonCatchDao {
                   'nome': item.nome,
                   'tipo': item.tipo,
                   'image': item.image
-                },
-            changeListener);
+                });
 
   final sqflite.DatabaseExecutor database;
 
@@ -161,17 +158,15 @@ class _$PokemonCatchDao extends PokemonCatchDao {
   }
 
   @override
-  Stream<PokemonCatch?> findPokemonCatchById(int pokedexNumber) {
-    return _queryAdapter.queryStream(
+  Future<PokemonCatch?> findPokemonCatchById(int pokedexNumber) async {
+    return _queryAdapter.query(
         'SELECT * FROM pokemon_catch WHERE pokedexNumber = ?1',
         mapper: (Map<String, Object?> row) => PokemonCatch(
             row['pokedexNumber'] as int,
             row['nome'] as String,
             row['tipo'] as String,
             row['image'] as String),
-        arguments: [pokedexNumber],
-        queryableName: 'pokemon_catch',
-        isView: false);
+        arguments: [pokedexNumber]);
   }
 
   @override

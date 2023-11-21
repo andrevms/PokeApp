@@ -1,4 +1,3 @@
-
 import 'package:floor/floor.dart';
 import 'package:pokemon_app/src/models/pokemon_catch.dart';
 
@@ -8,7 +7,7 @@ abstract class PokemonCatchDao {
   Future<List<PokemonCatch>> findAllPokemon();
 
   @Query('SELECT * FROM pokemon_catch WHERE pokedexNumber = :pokedexNumber')
-  Stream<PokemonCatch?> findPokemonCatchById(int pokedexNumber);
+  Future<PokemonCatch?> findPokemonCatchById(int pokedexNumber);
 
   @insert
   Future<void> insertPokemonCatch(PokemonCatch pokemonCatch);
@@ -18,6 +17,4 @@ abstract class PokemonCatchDao {
 
   @update
   Future<void> updatePokemonCatch(PokemonCatch pokemonCatch);
-  
-
 }

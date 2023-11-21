@@ -2,7 +2,7 @@ import 'package:floor/floor.dart';
 
 @Entity(tableName: "pokemon_catch")
 class PokemonCatch {
-  @PrimaryKey(autoGenerate: true)
+  @primaryKey
   int pokedexNumber;
 
   String nome = '';
@@ -21,7 +21,12 @@ class PokemonCatch {
   }
 
   Map<String, dynamic> toMap() {
-    return {'pokedexNumber': pokedexNumber, 'nome': nome, 'tipo': tipo, 'image': image};
+    return {
+      'pokedexNumber': pokedexNumber,
+      'nome': nome,
+      'tipo': tipo,
+      'image': image
+    };
   }
 
   @override
