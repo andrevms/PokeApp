@@ -32,6 +32,21 @@ class MenuPage extends StatelessWidget {
         child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        Image.network(
+          "https://logodownload.org/wp-content/uploads/2017/08/pokemon-logo.png",
+          height: 200,
+          width: MediaQuery.of(context).size.width * 0.7,
+          fit: BoxFit.scaleDown,
+        ),
+        Image.network(
+          "https://static.wikia.nocookie.net/pokepediabr/images/3/38/Pok%C3%A9dex_Kanto.png/revision/latest?cb=20131224014121&path-prefix=pt-br",
+          height: 300,
+          width: MediaQuery.of(context).size.width * 0.7,
+          fit: BoxFit.contain,
+        ),
+        const SizedBox(
+          height: 20,
+        ),
         ElevatedButton(
             onPressed: () {
               Navigator.push(
