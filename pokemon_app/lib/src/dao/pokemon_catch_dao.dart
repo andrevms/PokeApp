@@ -1,23 +1,21 @@
-
 import 'package:floor/floor.dart';
 import 'package:pokemon_app/src/models/pokemon_catch.dart';
+import 'package:pokemon_app/src/models/pokemon_model.dart';
 
 @dao
-abstract class PokemonCatchDao {
-  @Query('SELECT * FROM pokemon_catch')
-  Future<List<PokemonCatch>> findAllPokemon();
+abstract class PokemonModelDao {
+  @Query('SELECT * FROM pokemon_model')
+  Future<List<PokemonModel>> findAllPokemon();
 
-  @Query('SELECT * FROM pokemon_catch WHERE pokedexNumber = :pokedexNumber')
-  Stream<PokemonCatch?> findPokemonCatchById(int pokedexNumber);
+  @Query('SELECT * FROM pokemon_model WHERE pokedexNumber = :pokedexNumber')
+  Future<PokemonModel?> findPokemonById(int pokedexNumber);
 
   @insert
-  Future<void> insertPokemonCatch(PokemonCatch pokemonCatch);
+  Future<void> insertPokemon(PokemonModel pokemonModel);
 
   @delete
-  Future<void> deletePokemonCatch(PokemonCatch pokemonCatch);
+  Future<void> deletePokemon(PokemonModel pokemonModel);
 
   @update
-  Future<void> updatePokemonCatch(PokemonCatch pokemonCatch);
-  
-
+  Future<void> updatePokemon(PokemonModel pokemonModel);
 }

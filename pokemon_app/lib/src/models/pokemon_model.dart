@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:floor/floor.dart';
 
-@entity
+@Entity(tableName: "pokemon_model")
 class PokemonModel {
   @primaryKey
   final int? pokedexNumber;
@@ -66,7 +66,8 @@ class PokemonModel {
         vel: json['stats'][5]['base_stat'],
         total: valorTotal,
         urlImagem: json['sprites']['other']['official-artwork']
-            ['front_default']?? "https://i.pinimg.com/474x/e5/5e/b0/e55eb016d5271531276b6fccdf5389ce.jpg");
+                ['front_default'] ??
+            "https://i.pinimg.com/474x/e5/5e/b0/e55eb016d5271531276b6fccdf5389ce.jpg");
   }
 
   Future<List<PokemonModel>> toList(json) async {
@@ -77,7 +78,8 @@ class PokemonModel {
     //gerar número aleatório até 1150
     int valor = Random().nextInt(1150);
 
-    for (var x = valor; x < valor+20; x++) {
+    
+    for (var x = valor; x < valor + 21; x++) {
       apiListaPokemons.add(Dio().get(json[x]["url"]).then((value) {
         listaPokemons.add(toModel(value));
       }));

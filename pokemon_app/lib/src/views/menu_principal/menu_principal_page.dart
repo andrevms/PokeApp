@@ -2,6 +2,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pokemon_app/src/views/pokedex/pokedex_page.dart';
+import 'package:pokemon_app/src/views/pokemon_capturados/pokemons_capturados_page.dart';
+
 
 class Menu extends StatelessWidget {
   const Menu({super.key});
@@ -12,13 +14,13 @@ class Menu extends StatelessWidget {
       child: Scaffold(
           appBar: AppBar(
             backgroundColor: Theme.of(context).colorScheme.primary,
-            title:const Text(
-              "Pokedex App",                                        
+            title: const Text(
+              "Pokedex App",
             ),
             centerTitle: true,
             titleTextStyle: Theme.of(context).textTheme.labelLarge,
           ),
-          body:const MenuPage()),
+          body: const MenuPage()),
     );
   }
 }
@@ -50,10 +52,19 @@ class MenuPage extends StatelessWidget {
         ElevatedButton(
             onPressed: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => const PokedexListPage()));
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const PokedexListPage()));
             },
             child: const Text("Lista de Pokemons")),
-        ElevatedButton(onPressed: () {}, child: const Text('Pokemons Capturados')),
+        ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const PokemonCatchPage()));
+            },
+            child: const Text('Pokemons Capturados')),       
       ],
     ));
   }

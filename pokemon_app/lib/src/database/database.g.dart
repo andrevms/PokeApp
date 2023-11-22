@@ -61,7 +61,7 @@ class _$PokemonDatabase extends PokemonDatabase {
     changeListener = listener ?? StreamController<String>.broadcast();
   }
 
-  PokemonCatchDao? _pokemonCatchDaoInstance;
+  PokemonModelDao? _pokemonModelDaoInstance;
 
   Future<sqflite.Database> open(
     String path,
@@ -85,7 +85,7 @@ class _$PokemonDatabase extends PokemonDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `pokemon_catch` (`pokedexNumber` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nome` TEXT NOT NULL, `tipo` TEXT NOT NULL, `image` TEXT NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `pokemon_model` (`pokedexNumber` INTEGER, `nome` TEXT, `tipo` TEXT, `altura` INTEGER, `peso` INTEGER, `vida` INTEGER, `atk` INTEGER, `def` INTEGER, `velAtk` INTEGER, `velDef` INTEGER, `vel` INTEGER, `total` INTEGER, `urlImagem` TEXT, PRIMARY KEY (`pokedexNumber`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -94,49 +94,73 @@ class _$PokemonDatabase extends PokemonDatabase {
   }
 
   @override
-  PokemonCatchDao get pokemonCatchDao {
-    return _pokemonCatchDaoInstance ??=
-        _$PokemonCatchDao(database, changeListener);
+  PokemonModelDao get pokemonModelDao {
+    return _pokemonModelDaoInstance ??=
+        _$PokemonModelDao(database, changeListener);
   }
 }
 
-class _$PokemonCatchDao extends PokemonCatchDao {
-  _$PokemonCatchDao(
+class _$PokemonModelDao extends PokemonModelDao {
+  _$PokemonModelDao(
     this.database,
     this.changeListener,
-  )   : _queryAdapter = QueryAdapter(database, changeListener),
-        _pokemonCatchInsertionAdapter = InsertionAdapter(
+  )   : _queryAdapter = QueryAdapter(database),
+        _pokemonModelInsertionAdapter = InsertionAdapter(
             database,
-            'pokemon_catch',
-            (PokemonCatch item) => <String, Object?>{
+            'pokemon_model',
+            (PokemonModel item) => <String, Object?>{
                   'pokedexNumber': item.pokedexNumber,
                   'nome': item.nome,
                   'tipo': item.tipo,
-                  'image': item.image
-                },
-            changeListener),
-        _pokemonCatchUpdateAdapter = UpdateAdapter(
+                  'altura': item.altura,
+                  'peso': item.peso,
+                  'vida': item.vida,
+                  'atk': item.atk,
+                  'def': item.def,
+                  'velAtk': item.velAtk,
+                  'velDef': item.velDef,
+                  'vel': item.vel,
+                  'total': item.total,
+                  'urlImagem': item.urlImagem
+                }),
+        _pokemonModelUpdateAdapter = UpdateAdapter(
             database,
-            'pokemon_catch',
+            'pokemon_model',
             ['pokedexNumber'],
-            (PokemonCatch item) => <String, Object?>{
+            (PokemonModel item) => <String, Object?>{
                   'pokedexNumber': item.pokedexNumber,
                   'nome': item.nome,
                   'tipo': item.tipo,
-                  'image': item.image
-                },
-            changeListener),
-        _pokemonCatchDeletionAdapter = DeletionAdapter(
+                  'altura': item.altura,
+                  'peso': item.peso,
+                  'vida': item.vida,
+                  'atk': item.atk,
+                  'def': item.def,
+                  'velAtk': item.velAtk,
+                  'velDef': item.velDef,
+                  'vel': item.vel,
+                  'total': item.total,
+                  'urlImagem': item.urlImagem
+                }),
+        _pokemonModelDeletionAdapter = DeletionAdapter(
             database,
-            'pokemon_catch',
+            'pokemon_model',
             ['pokedexNumber'],
-            (PokemonCatch item) => <String, Object?>{
+            (PokemonModel item) => <String, Object?>{
                   'pokedexNumber': item.pokedexNumber,
                   'nome': item.nome,
                   'tipo': item.tipo,
-                  'image': item.image
-                },
-            changeListener);
+                  'altura': item.altura,
+                  'peso': item.peso,
+                  'vida': item.vida,
+                  'atk': item.atk,
+                  'def': item.def,
+                  'velAtk': item.velAtk,
+                  'velDef': item.velDef,
+                  'vel': item.vel,
+                  'total': item.total,
+                  'urlImagem': item.urlImagem
+                });
 
   final sqflite.DatabaseExecutor database;
 
@@ -144,50 +168,66 @@ class _$PokemonCatchDao extends PokemonCatchDao {
 
   final QueryAdapter _queryAdapter;
 
-  final InsertionAdapter<PokemonCatch> _pokemonCatchInsertionAdapter;
+  final InsertionAdapter<PokemonModel> _pokemonModelInsertionAdapter;
 
-  final UpdateAdapter<PokemonCatch> _pokemonCatchUpdateAdapter;
+  final UpdateAdapter<PokemonModel> _pokemonModelUpdateAdapter;
 
-  final DeletionAdapter<PokemonCatch> _pokemonCatchDeletionAdapter;
+  final DeletionAdapter<PokemonModel> _pokemonModelDeletionAdapter;
 
   @override
-  Future<List<PokemonCatch>> findAllPokemon() async {
-    return _queryAdapter.queryList('SELECT * FROM pokemon_catch',
-        mapper: (Map<String, Object?> row) => PokemonCatch(
-            row['pokedexNumber'] as int,
-            row['nome'] as String,
-            row['tipo'] as String,
-            row['image'] as String));
+  Future<List<PokemonModel>> findAllPokemon() async {
+    return _queryAdapter.queryList('SELECT * FROM pokemon_model',
+        mapper: (Map<String, Object?> row) => PokemonModel(
+            pokedexNumber: row['pokedexNumber'] as int?,
+            nome: row['nome'] as String?,
+            tipo: row['tipo'] as String?,
+            altura: row['altura'] as int?,
+            peso: row['peso'] as int?,
+            vida: row['vida'] as int?,
+            atk: row['atk'] as int?,
+            def: row['def'] as int?,
+            velAtk: row['velAtk'] as int?,
+            velDef: row['velDef'] as int?,
+            vel: row['vel'] as int?,
+            total: row['total'] as int?,
+            urlImagem: row['urlImagem'] as String?));
   }
 
   @override
-  Stream<PokemonCatch?> findPokemonCatchById(int pokedexNumber) {
-    return _queryAdapter.queryStream(
-        'SELECT * FROM pokemon_catch WHERE pokedexNumber = ?1',
-        mapper: (Map<String, Object?> row) => PokemonCatch(
-            row['pokedexNumber'] as int,
-            row['nome'] as String,
-            row['tipo'] as String,
-            row['image'] as String),
-        arguments: [pokedexNumber],
-        queryableName: 'pokemon_catch',
-        isView: false);
+  Future<PokemonModel?> findPokemonById(int pokedexNumber) async {
+    return _queryAdapter.query(
+        'SELECT * FROM pokemon_model WHERE pokedexNumber = ?1',
+        mapper: (Map<String, Object?> row) => PokemonModel(
+            pokedexNumber: row['pokedexNumber'] as int?,
+            nome: row['nome'] as String?,
+            tipo: row['tipo'] as String?,
+            altura: row['altura'] as int?,
+            peso: row['peso'] as int?,
+            vida: row['vida'] as int?,
+            atk: row['atk'] as int?,
+            def: row['def'] as int?,
+            velAtk: row['velAtk'] as int?,
+            velDef: row['velDef'] as int?,
+            vel: row['vel'] as int?,
+            total: row['total'] as int?,
+            urlImagem: row['urlImagem'] as String?),
+        arguments: [pokedexNumber]);
   }
 
   @override
-  Future<void> insertPokemonCatch(PokemonCatch pokemonCatch) async {
-    await _pokemonCatchInsertionAdapter.insert(
+  Future<void> insertPokemon(PokemonModel pokemonCatch) async {
+    await _pokemonModelInsertionAdapter.insert(
         pokemonCatch, OnConflictStrategy.abort);
   }
 
   @override
-  Future<void> updatePokemonCatch(PokemonCatch pokemonCatch) async {
-    await _pokemonCatchUpdateAdapter.update(
+  Future<void> updatePokemon(PokemonModel pokemonCatch) async {
+    await _pokemonModelUpdateAdapter.update(
         pokemonCatch, OnConflictStrategy.abort);
   }
 
   @override
-  Future<void> deletePokemonCatch(PokemonCatch pokemonCatch) async {
-    await _pokemonCatchDeletionAdapter.delete(pokemonCatch);
+  Future<void> deletePokemon(PokemonModel pokemonCatch) async {
+    await _pokemonModelDeletionAdapter.delete(pokemonCatch);
   }
 }

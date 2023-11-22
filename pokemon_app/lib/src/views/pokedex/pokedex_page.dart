@@ -47,9 +47,8 @@ class _ListPageState extends State<ListPage> {
         .data['results'];
 
     var pokemonModel = PokemonModel();
-    List<PokemonModel> listaPokemons = await pokemonModel.toList(pokemonApi);
-    print(listaPokemons[0].tipo);
-    
+    List<PokemonModel> listaPokemons = await pokemonModel.toList(pokemonApi);    
+        
     return listaPokemons;
   }
   atualizar()async{
