@@ -8,7 +8,7 @@ import 'package:pokemon_app/src/models/pokemon_model.dart';
 
 class PokemonDetalhesPage extends StatelessWidget {
   final PokemonModel model;
-  PokemonDetalhesPage({super.key, required this.model});
+  const PokemonDetalhesPage({super.key, required this.model});
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +70,10 @@ class PokemonDetalhesPage extends StatelessWidget {
       title: Row(children: [
         Expanded(
           child: Text(
-            model.nome.toString(),
+            // Exibir o apelido se existir, caso contrário exibir o nome
+            model.apelido != null && model.apelido!.isNotEmpty
+                ? model.apelido!
+                : model.nome.toString(),
             style: const TextStyle(fontSize: 24.0),
           ),
         ),
@@ -191,28 +194,28 @@ class PokemonDetalhesPage extends StatelessWidget {
 
             data.pokemonModelDao.insertPokemon(model);
             showToast(
-              "Parabéns !!! Você Capturou Esse pokemon!",
-              duration: Duration(seconds: 2),
+              "Parabéns !!! Você Capturou Esse Pokemon!",
+              duration: const Duration(seconds: 2),
               position: ToastPosition.bottom,
               backgroundColor: corByTipoPokemon(listTipo[0]).withOpacity(0.8),
               radius: 13.0,
-              textStyle: TextStyle(fontSize: 18.0, color: Colors.white),
+              textStyle: const TextStyle(fontSize: 18.0, color: Colors.white),
             );
           } else {
             showToast(
               "Você já possui esse pokemon",
-              duration: Duration(seconds: 2),
+              duration: const Duration(seconds: 2),
               position: ToastPosition.bottom,
               backgroundColor: corByTipoPokemon(listTipo[0]).withOpacity(0.8),
               radius: 13.0,
-              textStyle: TextStyle(fontSize: 18.0, color: Colors.white),
+              textStyle: const TextStyle(fontSize: 18.0, color: Colors.white),
             );
           }
         },
         child: Container(
           width: 30,
           height: 30,
-          child: Image(
+          child: const Image(
             image: AssetImage("assets/pokebola.png"),
           ),
         ),
