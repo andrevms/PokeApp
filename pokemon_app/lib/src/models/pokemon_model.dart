@@ -8,7 +8,7 @@ class PokemonModel {
   @primaryKey
   final int? pokedexNumber;
 
-  final String? nome;
+  String? nome;
   final String? tipo;
   final int? altura;
   final int? peso;
@@ -20,7 +20,6 @@ class PokemonModel {
   final int? vel;
   final int? total;
   final String? urlImagem;
-  String? apelido;
 
   PokemonModel(
       {this.pokedexNumber,
@@ -35,8 +34,7 @@ class PokemonModel {
       this.velDef,
       this.vel,
       this.total,
-      this.urlImagem,
-      this.apelido}); // Inicializando o campo de apelido como opcional
+      this.urlImagem,}); 
 
   PokemonModel toModel(api) {
     //lista de tipos
@@ -67,7 +65,6 @@ class PokemonModel {
         velDef: json['stats'][4]['base_stat'],
         vel: json['stats'][5]['base_stat'],
         total: valorTotal,
-        apelido: "", // Inicializando o campo de apelido como vazio
         urlImagem: json['sprites']['other']['official-artwork']
                 ['front_default'] ??
             "https://i.pinimg.com/474x/e5/5e/b0/e55eb016d5271531276b6fccdf5389ce.jpg");

@@ -70,10 +70,8 @@ class PokemonDetalhesPage extends StatelessWidget {
       title: Row(children: [
         Expanded(
           child: Text(
-            // Exibir o apelido se existir, caso contrário exibir o nome
-            model.apelido != null && model.apelido!.isNotEmpty
-                ? model.apelido!
-                : model.nome.toString(),
+            // Exibir o novo nome do pokemon
+            model.nome.toString(),
             style: const TextStyle(fontSize: 24.0),
           ),
         ),

@@ -95,7 +95,7 @@ class _ListBodyState extends State<ListBody> {
   }
 
 void showUpdateDialog(PokemonModel pokemon) {
-  String newNickname = pokemon.apelido ?? '';
+  String newNome = pokemon.nome ?? '';
 
   showDialog(
     context: context,
@@ -112,7 +112,7 @@ void showUpdateDialog(PokemonModel pokemon) {
                 ),
                 onChanged: (value) {
                   setState(() {
-                    newNickname = value;
+                    newNome = value;
                   });
                 },
               ),
@@ -121,11 +121,11 @@ void showUpdateDialog(PokemonModel pokemon) {
           actions: <Widget>[
             TextButton(
               onPressed: () async {
-                pokemon.apelido = newNickname; // Atualiza o apelido no objeto PokemonModel
+                pokemon.nome = newNome; // Atualiza o apelido no objeto PokemonModel
                 await updatePokemon(pokemon); // Atualiza o Pokémon no banco de dados
                 Navigator.pop(context);
               },
-              child: const Text('Atualizar Apelido'),
+              child: const Text('Atualizar'),
             ),
           ],
         );
