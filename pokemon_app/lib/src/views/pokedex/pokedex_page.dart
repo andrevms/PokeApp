@@ -9,6 +9,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pokemon_app/src/models/pokemon_model.dart';
+import 'package:pokemon_app/src/service/pokemon_catch_service.dart';
 import 'package:pokemon_app/src/views/pokemon_detalhes/pokemon_detalhes_page.dart';
 
 class PokedexListPage extends StatelessWidget {
@@ -39,30 +40,22 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
-  Future<List<PokemonModel>> pegarPokemons() async {
-   
-    // Retorna lista de pokemons
-    // Utilizando o Dio para fazer a requisição
-    var pokemonApi = (await Dio()
-            .get('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0'))
-        .data['results'];
-
-    var pokemonModel = PokemonModel();
-    List<PokemonModel> listaPokemons = await pokemonModel.toList(pokemonApi);    
-        
+  Future<List<PokemonModel>> obterPokemons() async {
+    List<PokemonModel> listaPokemons = await PokemonCatch().pegarPokemons();
     return listaPokemons;
   }
+
+  //função para o OnRefresh
   atualizar()async{
     setState(() {
       
     });
     return true;
   }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: pegarPokemons(),
+      future: obterPokemons(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           List<PokemonModel> pokemons = snapshot.data!;

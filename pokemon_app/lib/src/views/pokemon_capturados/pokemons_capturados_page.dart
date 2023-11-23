@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
-import 'package:pokemon_app/src/dao/pokemon_catch_dao.dart';
 import 'package:pokemon_app/src/database/database.dart';
-import 'package:pokemon_app/src/models/pokemon_catch.dart';
 import 'package:pokemon_app/src/models/pokemon_model.dart';
 import 'package:pokemon_app/src/views/pokemon_detalhes/pokemon_detalhes_page.dart';
 
@@ -60,8 +58,9 @@ class _ListBodyState extends State<ListBody> {
             Column(
               children: <Widget>[
                 CupertinoActionSheetAction(
-                  child: const Text('Atualizar'),
+                  child: const Text('Editar'),
                   onPressed: () {
+
                     Navigator.pop(context); // Fecha o menu
                     showUpdateDialog(
                         pokemon); // Abre um diálogo para atualizar o Pokémon
@@ -95,7 +94,7 @@ class _ListBodyState extends State<ListBody> {
   }
 
 void showUpdateDialog(PokemonModel pokemon) {
-  String newNome = pokemon.nome ?? '';
+  String newNome =  '';
 
   showDialog(
     context: context,
@@ -121,11 +120,12 @@ void showUpdateDialog(PokemonModel pokemon) {
           actions: <Widget>[
             TextButton(
               onPressed: () async {
-                pokemon.nome = newNome; // Atualiza o apelido no objeto PokemonModel
+                pokemon.nome = newNome;
+                 // Atualiza o apelido no objeto PokemonModel
                 await updatePokemon(pokemon); // Atualiza o Pokémon no banco de dados
                 Navigator.pop(context);
               },
-              child: const Text('Atualizar'),
+              child: const Text('Confirmar'),
             ),
           ],
         );
@@ -151,6 +151,8 @@ void showUpdateDialog(PokemonModel pokemon) {
 
   Future<void> updatePokemon(PokemonModel pokemon) async {
     var database = await db;
+    try{
+    pokemon.nome!.trim() == "" ? throw Exception("nome vazio") :
     await database!.pokemonModelDao.updatePokemon(pokemon);
     setState(() {
       showToast(
@@ -161,7 +163,16 @@ void showUpdateDialog(PokemonModel pokemon) {
         radius: 13.0,
         textStyle: const TextStyle(fontSize: 18.0, color: Colors.white),
       );
-    });
+    });}catch(erro){
+      showToast(
+        "Digite um nome válido!",
+        duration: const Duration(seconds: 2),
+        position: ToastPosition.bottom,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        radius: 13.0,
+        textStyle: const TextStyle(fontSize: 18.0, color: Colors.white),
+      );
+    }
   }
 
   Widget buildPokemonCard(BuildContext context, PokemonModel pokemon) {

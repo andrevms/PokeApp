@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:floor/floor.dart';
 import 'package:pokemon_app/src/models/pokemon_model.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
-import 'package:pokemon_app/src/dao/pokemon_catch_dao.dart';
+import 'package:pokemon_app/src/dao/pokemon_model_dao.dart';
 
 part 'database.g.dart';
 

@@ -215,19 +215,19 @@ class _$PokemonModelDao extends PokemonModelDao {
   }
 
   @override
-  Future<void> insertPokemon(PokemonModel pokemonCatch) async {
+  Future<void> insertPokemon(PokemonModel pokemonModel) async {
     await _pokemonModelInsertionAdapter.insert(
-        pokemonCatch, OnConflictStrategy.abort);
+        pokemonModel, OnConflictStrategy.abort);
   }
 
   @override
-  Future<void> updatePokemon(PokemonModel pokemonCatch) async {
-    await _pokemonModelUpdateAdapter.update(
-        pokemonCatch, OnConflictStrategy.abort);
+  Future<int> updatePokemon(PokemonModel pokemonModel) {
+    return _pokemonModelUpdateAdapter.updateAndReturnChangedRows(
+        pokemonModel, OnConflictStrategy.abort);
   }
 
   @override
-  Future<void> deletePokemon(PokemonModel pokemonCatch) async {
-    await _pokemonModelDeletionAdapter.delete(pokemonCatch);
+  Future<void> deletePokemon(PokemonModel pokemonModel) async {
+    await _pokemonModelDeletionAdapter.delete(pokemonModel);
   }
 }

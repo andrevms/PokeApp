@@ -69,21 +69,4 @@ class PokemonModel {
                 ['front_default'] ??
             "https://i.pinimg.com/474x/e5/5e/b0/e55eb016d5271531276b6fccdf5389ce.jpg");
   }
-
-  Future<List<PokemonModel>> toList(json) async {
-    //lita de Futures
-    List<Future> apiListaPokemons = [];
-    //lista de pokemons
-    List<PokemonModel> listaPokemons = [];
-    //gerar número aleatório até 1150
-    int valor = Random().nextInt(1150);
-
-    for (var x = valor; x < valor + 21; x++) {
-      apiListaPokemons.add(Dio().get(json[x]["url"]).then((value) {
-        listaPokemons.add(toModel(value));
-      }));
-    }
-    await Future.wait(apiListaPokemons);
-    return listaPokemons;
-  }
 }

@@ -1,5 +1,4 @@
 import 'package:floor/floor.dart';
-import 'package:pokemon_app/src/models/pokemon_catch.dart';
 import 'package:pokemon_app/src/models/pokemon_model.dart';
 
 @dao
@@ -17,5 +16,5 @@ abstract class PokemonModelDao {
   Future<void> deletePokemon(PokemonModel pokemonModel);
 
   @update
-  Future<void> updatePokemon(PokemonModel pokemonModel);
+  Future<int> updatePokemon(PokemonModel pokemonModel);
 }
