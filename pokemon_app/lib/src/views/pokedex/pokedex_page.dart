@@ -41,7 +41,8 @@ class ListPage extends StatefulWidget {
 class _ListPageState extends State<ListPage> {
   Future<List<PokemonModel>> pegarPokemons() async {
    
-    //Retorna lista de pokemons
+    // Retorna lista de pokemons
+    // Utilizando o Dio para fazer a requisição
     var pokemonApi = (await Dio()
             .get('https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0'))
         .data['results'];
