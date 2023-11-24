@@ -5,7 +5,6 @@
 // Subtitulo -->  nome do pokemon
 
 // Ao Clicar vai para a pagina do pokemon_detalhes
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pokemon_app/src/models/pokemon_model.dart';

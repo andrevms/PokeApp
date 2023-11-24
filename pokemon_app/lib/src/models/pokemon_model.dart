@@ -1,6 +1,3 @@
-import 'dart:math';
-
-import 'package:dio/dio.dart';
 import 'package:floor/floor.dart';
 
 @Entity(tableName: "pokemon_model")
